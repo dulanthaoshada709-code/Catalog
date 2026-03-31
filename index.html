@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>පොටෝ බෙදුම - කොටස් 6කට සමානව බෙදන්න</title>
+    <title>Neon Splitter | Image to 6 Equal Parts</title>
     <style>
         * {
             margin: 0;
@@ -12,362 +12,697 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Roboto', sans-serif;
-            background: linear-gradient(145deg, #f5f7fc 0%, #e9eef4 100%);
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Inter', sans-serif;
+            background: radial-gradient(circle at 20% 30%, #0a0a1a, #03030f);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 1rem;
+            padding: 2rem 1.5rem;
+            position: relative;
         }
 
-        /* ප්‍රධාන කාඩ් එක */
-        .card {
-            max-width: 1300px;
+        /* animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(2px);
-            border-radius: 2.5rem;
-            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.35), 0 4px 12px rgba(0,0,0,0.05);
-            overflow: hidden;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255,255,255,0.5);
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        /* header */
-        .hero {
-            background: #1e2a3e;
-            padding: 1.8rem 2rem;
+        /* main glassmorphic container */
+        .neon-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* header with neon glow */
+        .hero-neon {
             text-align: center;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 1.9rem;
-            letter-spacing: -0.3px;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .hero h1 span {
-            background: #ffb347;
-            padding: 0.2rem 0.8rem;
-            border-radius: 60px;
-            font-size: 1.2rem;
-            color: #1e2a3e;
-        }
-
-        .hero p {
-            opacity: 0.85;
-            font-weight: 400;
-            font-size: 1rem;
-        }
-
-        /* upload zone */
-        .upload-area {
-            background: #fef9e8;
-            margin: 2rem 2rem 0.5rem 2rem;
-            border-radius: 2rem;
+            margin-bottom: 2rem;
             padding: 1.5rem;
-            text-align: center;
-            border: 2px dashed #cbd5e1;
-            transition: all 0.2s;
+        }
+
+        .hero-neon h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00ffff, #ff00ff, #00ffaa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            letter-spacing: -0.5px;
+        }
+
+        .hero-neon p {
+            color: #a0a0ff;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* card style */
+        .glass-card {
+            background: rgba(15, 15, 35, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* upload zone with neon border */
+        .upload-zone {
+            margin: 1.8rem;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 1.5rem;
+            border: 2px dashed #00ffff;
+            transition: all 0.3s;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .upload-area:hover {
-            border-color: #ff8c42;
-            background: #fff6e8;
+        .upload-zone:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+            background: rgba(0, 20, 40, 0.6);
         }
 
-        .upload-label {
+        .upload-content {
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 2rem;
             gap: 12px;
-            cursor: pointer;
         }
 
-        .upload-icon {
-            font-size: 3.2rem;
+        .upload-icon-svg {
+            width: 56px;
+            height: 56px;
+            filter: drop-shadow(0 0 8px cyan);
         }
 
-        .upload-label span:first-of-type {
-            font-weight: 600;
+        .upload-text {
             font-size: 1.2rem;
-            color: #2c3e4e;
+            font-weight: 600;
+            color: #ccddff;
         }
 
-        .file-info {
-            font-size: 0.85rem;
-            color: #5a6874;
+        .upload-hint {
+            font-size: 0.75rem;
+            color: #88aaff;
         }
 
         input[type="file"] {
             display: none;
         }
 
-        /* preview row */
-        .preview-row {
+        /* preview row flex */
+        .preview-panel {
             display: flex;
             flex-wrap: wrap;
-            gap: 2rem;
-            margin: 1.5rem 2rem;
-            justify-content: center;
+            gap: 1.8rem;
+            margin: 1.8rem;
         }
 
-        .original-preview {
+        .original-box {
             flex: 1;
-            min-width: 220px;
-            background: #fff;
-            border-radius: 1.5rem;
+            min-width: 240px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1.2rem;
             padding: 1rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            backdrop-filter: blur(4px);
         }
 
-        .original-preview h3, .grid-preview h3 {
+        .section-title {
             font-size: 1.2rem;
-            margin-bottom: 0.8rem;
-            color: #2d3e50;
             font-weight: 600;
-            border-left: 4px solid #ff8c42;
-            padding-left: 12px;
+            margin-bottom: 1rem;
+            padding-left: 0.8rem;
+            border-left: 4px solid #00ffff;
+            color: #bbffff;
+            text-shadow: 0 0 5px cyan;
         }
 
-        .image-container {
-            max-width: 100%;
-            max-height: 280px;
+        .image-preview {
+            background: #050510;
+            border-radius: 1rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f1f5f9;
-            border-radius: 1rem;
+            min-height: 240px;
             overflow: hidden;
-            margin-top: 8px;
+            position: relative;
         }
 
-        .image-container img {
+        .image-preview img {
             max-width: 100%;
-            max-height: 260px;
+            max-height: 280px;
             object-fit: contain;
             transition: 0.2s;
         }
 
-        /* 6-grid බෙදුම */
-        .grid-preview {
-            flex: 2;
-            min-width: 320px;
-            background: #fff;
-            border-radius: 1.5rem;
-            padding: 1rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        .empty-state {
+            color: #66aaff;
+            padding: 2rem;
             text-align: center;
+            font-size: 0.9rem;
         }
 
-        .split-grid {
+        /* grid 3x2 neon tiles */
+        .grid-box {
+            flex: 2;
+            min-width: 340px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid rgba(255, 0, 255, 0.4);
+        }
+
+        .split-matrix {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(2, 1fr);
             gap: 8px;
-            background: #e2e8f0;
+            background: rgba(0, 20, 30, 0.6);
             padding: 8px;
-            border-radius: 1.2rem;
+            border-radius: 1rem;
             aspect-ratio: 3 / 2;
-            max-height: 380px;
             margin-top: 10px;
         }
 
-        .grid-tile {
-            background: #1e293b;
+        .neon-tile {
+            background: #0a0a1f;
             border-radius: 12px;
             overflow: hidden;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background-size: cover;
-            background-repeat: no-repeat;
             background-position: center;
-            transition: transform 0.1s ease;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background-repeat: no-repeat;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
         }
 
-        .grid-tile:hover {
-            transform: scale(1.01);
-            filter: brightness(0.98);
-            z-index: 2;
+        .neon-tile:hover {
+            transform: scale(1.02);
+            border-color: #ff44ff;
+            box-shadow: 0 0 15px #ff00ff;
+            z-index: 3;
         }
 
-        /* tile එකට අංක කුඩාවට */
-        .tile-index {
+        .tile-badge {
             position: absolute;
             bottom: 6px;
             right: 8px;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(3px);
-            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            color: #0ff;
             font-size: 0.7rem;
             font-weight: bold;
             padding: 2px 8px;
-            border-radius: 40px;
+            border-radius: 20px;
             font-family: monospace;
+            letter-spacing: 0.5px;
+            border: 1px solid cyan;
         }
 
-        /* button container */
-        .action-area {
+        /* RGB NEON BUTTON (animated) */
+        .button-wrapper {
             display: flex;
             justify-content: center;
-            margin: 0.5rem 2rem 2rem 2rem;
+            margin: 1rem 1.8rem 1.5rem 1.8rem;
         }
 
-        .split-btn {
-            background: linear-gradient(105deg, #ff8c42 0%, #ff6a2c 100%);
+        .rgb-neon-btn {
+            background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000);
+            background-size: 300% 100%;
+            animation: rgbFlow 4s linear infinite;
             border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.3rem;
-            font-weight: bold;
+            padding: 1rem 2.8rem;
+            font-size: 1.35rem;
+            font-weight: 800;
             color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             border-radius: 60px;
             cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 8px 18px rgba(255,108,44,0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
+            transition: all 0.2s;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.7), 0 4px 12px black;
+            position: relative;
+            overflow: hidden;
         }
 
-        .split-btn:active {
-            transform: scale(0.97);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        @keyframes rgbFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .split-btn.disabled-btn, .split-btn:disabled {
-            background: #b9c2cc;
+        .rgb-neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .rgb-neon-btn:hover::before {
+            left: 100%;
+        }
+
+        .rgb-neon-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 28px rgba(0, 255, 255, 0.8), 0 0 12px magenta;
+        }
+
+        .rgb-neon-btn:disabled {
+            animation: none;
+            background: #333366;
             box-shadow: none;
             cursor: not-allowed;
+            opacity: 0.5;
             transform: none;
-            opacity: 0.7;
         }
 
-        /* download 6 parts individually */
-        .download-section {
-            margin: 0rem 2rem 2rem 2rem;
-            background: #f8fafc;
-            border-radius: 1.5rem;
-            padding: 1rem 1.2rem;
-            border-top: 1px solid #e2edf2;
+        /* download section */
+        .download-neon {
+            margin: 0rem 1.8rem 1.8rem 1.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border-top: 2px solid #00ffff;
+            backdrop-filter: blur(8px);
         }
 
-        .download-title {
-            font-weight: 600;
-            color: #1e2a3e;
-            margin-bottom: 12px;
-            font-size: 1rem;
+        .download-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            color: #88ddff;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
         }
 
-        .download-buttons {
+        .download-grid-buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
             justify-content: center;
         }
 
-        .part-dl-btn {
-            background: white;
-            border: 1px solid #cbd5e1;
-            padding: 8px 16px;
+        .neon-dl-btn {
+            background: rgba(20, 20, 50, 0.9);
+            border: 1px solid #0ff;
+            padding: 8px 18px;
             border-radius: 40px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.15s;
-            font-size: 0.85rem;
+            transition: 0.2s;
+            font-size: 0.8rem;
+            color: #bbffff;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(5px);
+        }
+
+        .neon-dl-btn:hover {
+            background: #ff00aa20;
+            border-color: #ff44ff;
+            box-shadow: 0 0 12px #ff44ff;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.7rem;
+            color: #6688aa;
+            border-top: 1px solid rgba(0,255,255,0.2);
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 780px) {
+            .hero-neon h1 { font-size: 2rem; }
+            .rgb-neon-btn { padding: 0.7rem 1.5rem; font-size: 1rem; }
+            .preview-panel { flex-direction: column; }
+        }
+
+        /* google photos inspiration badge */
+        .google-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-        }
-
-        .part-dl-btn:hover {
-            background: #ffedd5;
-            border-color: #ff8c42;
-            transform: translateY(-1px);
-        }
-
-        .reset-hint {
-            font-size: 0.75rem;
-            text-align: center;
-            margin-top: 12px;
-            color: #4b5563;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background: #eef2f6;
-            font-size: 0.75rem;
-            color: #5c6e7e;
-        }
-
-        @media (max-width: 760px) {
-            .preview-row {
-                flex-direction: column;
-            }
-            .hero h1 {
-                font-size: 1.4rem;
-            }
-            .split-btn {
-                padding: 0.7rem 1.5rem;
-                font-size: 1rem;
-            }
-            .split-grid {
-                gap: 4px;
-            }
-        }
-
-        .empty-message {
-            color: #94a3b8;
-            padding: 2rem;
-            text-align: center;
+            background: rgba(255,255,255,0.05);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            color: #99ccff;
+            margin-top: 8px;
         }
     </style>
 </head>
 <body>
-
-<div class="card">
-    <div class="hero">
-        <h1>
-            📸 පොටෝ බෙදුම 
-            <span>6 කොටස්</span>
-        </h1>
-        <p>රූපයක් උඩුගත කරන්න, ඉන්පසු "කොටස් 6කට බෙදන්න" බොත්තම ඔබන්න. පින්තූරය සමාන කොටස් හයකට බෙදා පෙන්වයි.</p>
+<div class="neon-container">
+    <div class="hero-neon">
+        <h1>NEON SPLITTER</h1>
+        <p>6 equal segments • RGB pulse • cinematic slicing</p>
+        <div class="google-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            <span>Google Photos style • drag & drop ready</span>
+        </div>
     </div>
 
-    <!-- Upload area -->
-    <div class="upload-area" id="uploadArea">
-        <label for="imageUpload" class="upload-label">
-            <div class="upload-icon">🖼️➕</div>
-            <span>පින්තූරයක් තෝරන්න</span>
-            <span class="file-info">JPG, PNG, WEBP (උපරිම 8MB)</span>
-        </label>
-        <input type="file" id="imageUpload" accept="image/jpeg, image/png, image/webp">
-    </div>
+    <div class="glass-card">
+        <!-- upload area with svg icon -->
+        <div class="upload-zone" id="uploadZone">
+            <div class="upload-content">
+                <svg class="upload-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polygon points="17 8 12 3 7 8 12 3 17 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <span class="upload-text">select image from device</span>
+                <span class="upload-hint">JPG, PNG, WEBP • max 10MB</span>
+            </div>
+            <input type="file" id="imageUploader" accept="image/jpeg, image/png, image/webp">
+        </div>
 
-    <!-- Preview row: original + 6-grid -->
-    <div class="preview-row">
-        <div class="original-preview">
-            <h3>✨ මුල් පින්තූරය</h3>
-            <div class="image-container" id="originalContainer">
-                <img id="originalImg" src="" alt="තෝරාගත් පොටෝව" style="display: none;">
-                <div class="empty-message" id="noOriginalMsg">⚠️ තවම පින්තූරයක් තෝරා නැත</div>
+        <!-- preview + grid -->
+        <div class="preview-panel">
+            <div class="original-box">
+                <div class="section-title">original capture</div>
+                <div class="image-preview" id="originalPreviewArea">
+                    <img id="originPhoto" src="" alt="original" style="display: none;">
+                    <div class="empty-state" id="emptyOriginalMsg">✨ no image selected<br>upload or drag photo</div>
+                </div>
+            </div>
+
+            <div class="grid-box">
+                <div class="section-title">6 equal slices • 3x2 matrix</div>
+                <div class="split-matrix" id="neonGrid">
+                    <!-- six tiles with neon vibe -->
+                    <div class="neon-tile"><span class="tile-badge">1</span></div>
+                    <div class="neon-tile"><span class="tile-badge">2</span></div>
+                    <div class="neon-tile"><span class="tile-badge">3</span></div>
+                    <div class="neon-tile"><span class="tile-badge">4</span></div>
+                    <div class="neon-tile"><span class="tile-badge">5</span></div>
+                    <div class="neon-tile"><span class="tile-badge">6</span></div>
+                </div>
+                <div style="font-size: 0.7rem; text-align: center; margin-top: 10px; color: #77aaff;">⚡ hover to glow • each tile = exact slice</div>
+            </div>
+        </div>
+
+        <!-- RGB NEON BUTTON (without emoji) -->
+        <div class="button-wrapper">
+            <button class="rgb-neon-btn" id="splitNeonBtn">DIVIDE INTO 6 PARTS</button>
+        </div>
+
+        <!-- download section with per part buttons -->
+        <div class="download-neon" id="downloadNeonPanel" style="display: none;">
+            <div class="download-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ff" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polygon points="7 10 12 15 17 10 12 15 7 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>download each segment • right click or click button</span>
+            </div>
+            <div class="download-grid-buttons" id="downloadPartsList"></div>
+        </div>
+        <div class="footer-note">
+            ◈ cinematic slicing • perfectly equal 6 parts based on original resolution ◈
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // DOM refs
+        const fileInput = document.getElementById('imageUploader');
+        const uploadZone = document.getElementById('uploadZone');
+        const originalImg = document.getElementById('originPhoto');
+        const emptyMsgDiv = document.getElementById('emptyOriginalMsg');
+        const splitBtn = document.getElementById('splitNeonBtn');
+        const gridContainer = document.getElementById('neonGrid');
+        const downloadPanel = document.getElementById('downloadNeonPanel');
+        const downloadList = document.getElementById('downloadPartsList');
+
+        // state variables
+        let currentImageFile = null;
+        let currentImageElement = null;   // HTMLImageElement fully loaded
+        let originalWidth = 0, originalHeight = 0;
+        let slicedPartsArray = [];          // store dataUrl + index
+
+        // helper to reset UI after new image load
+        function resetSlicesUI() {
+            const tiles = gridContainer.querySelectorAll('.neon-tile');
+            for(let tile of tiles) {
+                tile.style.backgroundImage = '';
+                tile.style.backgroundColor = '#0a0a1f';
+                let badge = tile.querySelector('.tile-badge');
+                if(!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'tile-badge';
+                    tile.appendChild(badge);
+                }
+            }
+            // reset index badges text
+            const allBadges = gridContainer.querySelectorAll('.tile-badge');
+            for(let i=0; i<allBadges.length && i<6; i++) {
+                allBadges[i].innerText = (i+1).toString();
+            }
+            downloadPanel.style.display = 'none';
+            slicedPartsArray = [];
+            if(currentImageFile) {
+                splitBtn.disabled = false;
+            } else {
+                splitBtn.disabled = true;
+            }
+        }
+
+        // load image from file object
+        function loadImageFromFile(file) {
+            if(!file) return;
+            if(!file.type.match('image.*')) {
+                alert("Please select a valid image (JPEG, PNG, WEBP)");
+                return;
+            }
+            if(file.size > 10 * 1024 * 1024) {
+                alert("Maximum size 10MB, choose smaller image");
+                return;
+            }
+            currentImageFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                originalImg.src = dataUrl;
+                originalImg.style.display = 'block';
+                emptyMsgDiv.style.display = 'none';
+                
+                const tempImage = new Image();
+                tempImage.onload = function() {
+                    currentImageElement = tempImage;
+                    originalWidth = tempImage.width;
+                    originalHeight = tempImage.height;
+                    resetSlicesUI();
+                    // make split button active
+                    splitBtn.disabled = false;
+                };
+                tempImage.src = dataUrl;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // splitting logic: divide into 3 columns (width) and 2 rows => 6 equal parts
+        function performSixSplit() {
+            if(!currentImageElement || originalWidth === 0 || originalHeight === 0) {
+                alert("First upload an image before splitting.");
+                return;
+            }
+            
+            const imgW = originalWidth;
+            const imgH = originalHeight;
+            const tileW = imgW / 3;
+            const tileH = imgH / 2;
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const newParts = [];
+            
+            // rows: 0 to 1, cols: 0 to 2
+            for(let row = 0; row < 2; row++) {
+                for(let col = 0; col < 3; col++) {
+                    const sx = col * tileW;
+                    const sy = row * tileH;
+                    const sw = tileW;
+                    const sh = tileH;
+                    
+                    canvas.width = tileW;
+                    canvas.height = tileH;
+                    ctx.clearRect(0, 0, tileW, tileH);
+                    ctx.drawImage(currentImageElement, sx, sy, sw, sh, 0, 0, tileW, tileH);
+                    const partDataURL = canvas.toDataURL('image/png');
+                    const idx = row * 3 + col + 1;
+                    newParts.push({
+                        dataUrl: partDataURL,
+                        width: tileW,
+                        height: tileH,
+                        index: idx,
+                        col, row
+                    });
+                }
+            }
+            slicedPartsArray = newParts;
+            
+            // update each neon tile background
+            const tiles = gridContainer.querySelectorAll('.neon-tile');
+            for(let i = 0; i < tiles.length && i < slicedPartsArray.length; i++) {
+                const part = slicedPartsArray[i];
+                const tile = tiles[i];
+                tile.style.backgroundImage = `url('${part.dataUrl}')`;
+                tile.style.backgroundSize = 'cover';
+                tile.style.backgroundPosition = 'center';
+                tile.style.backgroundColor = '#000000';
+                // ensure badge shows index
+                let badgeSpan = tile.querySelector('.tile-badge');
+                if(!badgeSpan) {
+                    badgeSpan = document.createElement('span');
+                    badgeSpan.className = 'tile-badge';
+                    tile.appendChild(badgeSpan);
+                }
+                badgeSpan.innerText = part.index;
+            }
+            
+            // generate download buttons for each slice
+            generateDownloadButtons(slicedPartsArray);
+            downloadPanel.style.display = 'block';
+        }
+        
+        function generateDownloadButtons(parts) {
+            downloadList.innerHTML = '';
+            for(let part of parts) {
+                const btn = document.createElement('button');
+                btn.className = 'neon-dl-btn';
+                // text without emoji, clean and modern
+                btn.innerText = `SLICE ${part.index}  •  ${Math.round(part.width)}x${Math.round(part.height)} px`;
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    downloadImage(part.dataUrl, `neon_slice_${part.index}.png`);
+                });
+                downloadList.appendChild(btn);
+            }
+        }
+        
+        function downloadImage(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Event: file input change
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if(file) {
+                loadImageFromFile(file);
+            } else {
+                // reset everything
+                currentImageFile = null;
+                currentImageElement = null;
+                originalImg.style.display = 'none';
+                emptyMsgDiv.style.display = 'flex';
+                resetSlicesUI();
+                splitBtn.disabled = true;
+                downloadPanel.style.display = 'none';
+                const tiles = gridContainer.querySelectorAll('.neon-tile');
+                for(let t of tiles) {
+                    t.style.backgroundImage = '';
+                    t.style.backgroundColor = '#0a0a1f';
+                }
+            }
+        });
+        
+        // split button action
+        splitBtn.addEventListener('click', () => {
+            if(!currentImageElement) {
+                alert("Please upload an image first (JPG/PNG).");
+                return;
+            }
+            performSixSplit();
+        });
+        
+        // Drag & Drop on upload zone (google photos like)
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, preventDefaults, false);
+        });
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        uploadZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if(files && files.length > 0) {
+                const file = files[0];
+                if(file.type.startsWith('image/')) {
+                    loadImageFromFile(file);
+                    // sync file input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+                } else {
+                    alert("Drop an image file only.");
+                }
+            }
+        });
+        
+        // click on upload zone triggers file input
+        uploadZone.addEventListener('click', (e) => {
+            if(e.target !== fileInput) {
+                fileInput.click();
+            }
+        });
+        
+        // initial state: disable split button
+        splitBtn.disabled = true;
+        // set default tile badges
+        const initTiles = gridContainer.querySelectorAll('.neon-tile');
+        for(let idx=0; idx<initTiles.length; idx++) {
+            let badge = initTiles[idx].querySelector('.tile-badge');
+            if(!badge) {
+                badge = document.createElement('span');
+                badge.className = 'tile-badge';
+                initTiles[idx].appendChild(badge);
+            }
+            badge.innerText = (idx+1).toString();
+        }
+    })();
+</script>
+</body>
+                        </html>රා නැත</div>
             </div>
         </div>
 
